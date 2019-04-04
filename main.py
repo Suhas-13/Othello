@@ -37,11 +37,7 @@ def newGame(player1,player2):
     return(game)
 
 def printBoard(board):
-    #print(" ", end='')
-    #for i in ['a','b','c','d','e','f','g']:
-        #print("|"+i, end='')
-    #print("|h|")
-    #print(" +-+-+-+-+-+-+-+-+")
+    
     mapboard=board
     maincount=0
     for lists in mapboard:
@@ -58,6 +54,42 @@ def printBoard(board):
         maincount+=1
     rep='  |a|b|c|d|e|f|g|h| \n  +-+-+-+-+-+-+-+-+ \n1 '+"|" + "|".join(mapboard[0]) +"|"+'\n2 '+"|" + "|".join(mapboard[1]) +"|" +'\n3 '+"|" + "|".join(mapboard[2]) +"|" '\n4 '+"|" + "|".join(mapboard[3]) +"|" '\n5 '+"|" + "|".join(mapboard[4]) +"|" '\n6 '+"|" + "|".join(mapboard[5]) +"|" '\n7 '+"|" + "|".join(mapboard[6]) +"|" '\n8 '+"|" + "|".join(mapboard[7]) +"|"+"\n  +-+-+-+-+-+-+-+-+" 
     print(rep)
-def strToIndex(s)
+def strToIndex(s):
+    letterlist=['a','b','c','d','e','f','g','h']
+    output=['','']
+    numberlist=['1','2','3','4','5','6','7','8']
+    s=s.replace(" ","")
+    if len(s) > 2:
+        raise ValueError
+    if len(s)<2:
+        raise ValueError
+    if s[0].isnumeric():
+        if int(s[0]) not in [1,2,3,4,5,6,7,8]:
+            raise ValueError
+    elif s[1].isnumeric():
+        if int(s[1]) not in [1,2,3,4,5,6,7,8]:
+            raise ValueError
+    else:
+        raise ValueError
+    if s[0].isalpha():
+        if s[0].lower() not in ['a','b','c','d','e','f','g','h']:
+            raise ValueError
+    elif s[1].isalpha():
+        
+        if s[1].lower() not in ['a','b','c','d','e','f','g','h']:
+            raise ValueError
+    else:
+        raise ValueError
+    
+    if s[0].isalpha():
+       output[1]=(letterlist.index(s[0].lower()))
+    elif s[1].isalpha():
+        output[1]=(letterlist.index(s[1].lower()))
 
-   
+    if s[0].isnumeric():
+        output[0]=numberlist.index(str(s[0]))
+    elif s[1].isnumeric():
+        output[0]=numberlist.index(str(s[1]))
+    return(output)
+        
+       
