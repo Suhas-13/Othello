@@ -56,7 +56,7 @@ def printBoard(board):
     print(rep)
 def strToIndex(s):
     letterlist=['a','b','c','d','e','f','g','h']
-    output=['','']
+    output=('','')
     numberlist=['1','2','3','4','5','6','7','8']
     s=s.replace(" ","")
     if len(s) > 2:
@@ -82,14 +82,44 @@ def strToIndex(s):
         raise ValueError
     
     if s[0].isalpha():
-       output[1]=(letterlist.index(s[0].lower()))
+       val1=(letterlist.index(s[0].lower()))
     elif s[1].isalpha():
-        output[1]=(letterlist.index(s[1].lower()))
+        val1=(letterlist.index(s[1].lower()))
 
     if s[0].isnumeric():
-        output[0]=numberlist.index(str(s[0]))
+        val0=numberlist.index(str(s[0]))
     elif s[1].isnumeric():
-        output[0]=numberlist.index(str(s[1]))
-    return(output)
+        val0=numberlist.index(str(s[1]))
+    return(val0,val1)
+def indexToStr(t):
+    letterlist=['a','b','c','d','e','f','g','h']
+    numberlist=[1,2,3,4,5,6,7,8]
+    return(letterlist[t[1]] + str(numberlist[t[0]]))
         
        
+def loadGame():
+    
+    try:
+        with open("game.txt") as f:
+            file = f.read().splitlines() 
+
+    except:
+        raise FileNotFoundError
+    
+    try:
+        game={'player1':file[0],
+              'player2':file[1],
+              'who':file[2],
+              'game':[]
+               }
+        file.pop(0)
+        file.pop(0)
+        file.pop(0)
+        for i in file:
+            game['game'].append(i.split(","))
+    except:
+        raise ValueError
+    return(game)
+def getLine():
+    
+    
