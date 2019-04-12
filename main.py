@@ -120,6 +120,88 @@ def loadGame():
     except:
         raise ValueError
     return(game)
-def getLine():
+def getLine(board,who,pos,dirs):
+    #Couldn't use dir as it is a keyword so using dirs instead
+    if who == 1:
+        whonot=2
+    elif who == 2:
+        whonot=1
+    output=[]
+
+    val=[]
     
-    
+
+    if dirs[0] == 0:
+        addone=0
+    elif dirs[0]==1:
+        addone=1
+    elif dirs[0]==-1:
+        addone=-1
+    if dirs[1]==0:
+        addtwo=0
+    elif dirs[1]==1:
+        addtwo=1
+    elif dirs[1]==-1:
+        addtwo=-1
+    countone=addone
+    counttwo=addtwo
+    try:
+        flag=True
+        for i in range(0,8):
+            val=[pos[0]+countone,pos[1]+counttwo]
+            if ( int(board[val[0]][val[1]])) == who:
+                break
+            elif ( int(board[val[0]][val[1]])) == whonot:
+                output.append(val)
+            elif ( int(board[val[0]][val[1]])) == 0:
+                output=[]
+                break
+            countone+=addone
+            counttwo+=addtwo
+
+            if val[0] ==0 or val[1] ==0:
+                break
+        
+        return(output)
+    except:
+        pass
+        
+def getValidMoves(board,who):
+    output=[]
+    for r in range(0,7):
+        for c in range(0,7):
+            if int(board[r][c])==0:
+                line1=getLine(board,who,(r,c),(0,1))
+                if len(line1)>0:
+                    output.append((r,c))
+                    
+                line2=getLine(board,who,(r,c),(1,0))
+                if len(line2)>0:
+                    output.append((r,c))
+
+                line3=getLine(board,who,(r,c),(1,1))
+                if len(line3)>0:
+                    output.append((r,c))
+                
+                line4=getLine(board,who,(r,c),(0,-1))
+                if len(line4)>0:
+                    output.append((r,c))
+                
+                line5=getLine(board,who,(r,c),(-1,0))
+                if len(line5)>0:
+                    output.append((r,c))
+                    
+                line6=getLine(board,who,(r,c),(-1,-1))
+                if len(line6)>0:
+                    output.append((r,c))
+                    
+                line7=getLine(board,who,(r,c),(-1,1))
+                if len(line7)>0:
+                    output.append((r,c))
+                    
+                line8=getLine(board,who,(r,c),(1,-1))
+                if len(line8)>0:
+                    output.append((r,c))
+
+               
+    return(list(set(output)))
