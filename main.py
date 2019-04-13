@@ -1,6 +1,21 @@
 
 from copy import deepcopy
-
+"""
+game={
+    'player1':p1,
+    'player2':p2,
+    'who':1,
+    'board':
+[[0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0,0, 2, 1, 0, 0, 0],
+[0, 0, 0, 1, 2, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0]]
+}
+"""
 def newGame(player1,player2):
     
     if player1 == '':
@@ -97,14 +112,14 @@ def loadGame():
     try:
         game={'player1':file[0],
               'player2':file[1],
-              'who':file[2],
-              'game':[]
+              'who':int(file[2]),
+              'board':[]
                }
         file.pop(0)
         file.pop(0)
         file.pop(0)
         for i in file:
-            game['game'].append(i.split(","))
+            game['board'].append(i.split(","))
     except:
         raise ValueError
     return(game)
@@ -198,50 +213,51 @@ def makeMove(board,move,who):
     r=move[0]
     c=move[1]
     output=[]
-    board[move[0]][move[1]] = who
-    line1=getLine(board,who,(r,c),(0,1))
+    board5=board
+    board5[move[0]][move[1]] = who
+    line1=getLine(board5,who,(r,c),(0,1))
     if len(line1)>0:
         for i in line1:
             output.append(i)
         
-    line2=getLine(board,who,(r,c),(1,0))
+    line2=getLine(board5,who,(r,c),(1,0))
     if len(line2)>0:
         for i in line2:
             output.append(i)
 
-    line3=getLine(board,who,(r,c),(1,1))
+    line3=getLine(board5,who,(r,c),(1,1))
     if len(line3)>0:
         for i in line3:
             output.append(i)
     
-    line4=getLine(board,who,(r,c),(0,-1))
+    line4=getLine(board5,who,(r,c),(0,-1))
     if len(line4)>0:
         for i in line4:
             output.append(i)
     
-    line5=getLine(board,who,(r,c),(-1,0))
+    line5=getLine(board5,who,(r,c),(-1,0))
     if len(line5)>0:
         for i in line5:
             output.append(i)
         
-    line6=getLine(board,who,(r,c),(-1,-1))
+    line6=getLine(board5,who,(r,c),(-1,-1))
     if len(line6)>0:
         for i in line6:
             output.append(i)
         
-    line7=getLine(board,who,(r,c),(-1,1))
+    line7=getLine(board5,who,(r,c),(-1,1))
     if len(line7)>0:
         for i in line7:
             output.append(i)
         
-    line8=getLine(board,who,(r,c),(1,-1))
+    line8=getLine(board5,who,(r,c),(1,-1))
     if len(line8)>0:
         for i in line8:
             output.append(i)
 
     for i in output:
         board[i[0]][i[1]]=(who)
-    return(board)
+    return(board5)
 def scoreBoard(board):
     player1=0
     player2=0
@@ -254,42 +270,50 @@ def scoreBoard(board):
     return(player1-player2)
 def suggestMove1(board,who):
     moves=getValidMoves(board,who)
+    
     highest=0
-    higestmove=()
+    highestmove=()
     for move in moves:
-        board1=deepcopy(board)
-        count=scoreBoard(makeMove(board1,move,who))
+        board2=deepcopy(board)
+        count=scoreBoard(makeMove(board2,move,who))
         if  count> highest:
             highest=count
             highestmove=move
+    if highest ==0:
+        highestmove=moves[0]
     return(highestmove)
 def play():
     print("Welcome to Othello")
     print("\n\nEnter player name's or c for computer and l for load")
-    p1=input("Please enter player #1's name: ")
+    p1=''
+    p2=''
+    while p1 == '': 
+        p1=input("Please enter player #1's name: ")
     if p1.lower() == 'l':
         game=loadGame()
-    p2=input("Please enter player #2's name: ")
-    print("\n\nLet's begin!\n\n")
-    p1=p1.capitalize()
-    p2=p2.capitalize()
-    game={
-    'player1':p1,
-    'player2':p2,
-    'who':1,
-    'board':
-[[0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0,0, 2, 1, 0, 0, 0],
-[0, 0, 0, 1, 2, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0]]
-}
+    else:
+        while p2 == '':
+            p2=input("Please enter player #2's name: ")
+            print("\n\nLet's begin!\n\n")
+            p1=p1.capitalize()
+            p2=p2.capitalize()
+            game={
+            'player1':p1,
+            'player2':p2,
+            'who':1,
+            'board':
+        [[0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0,0, 2, 1, 0, 0, 0],
+        [0, 0, 0, 1, 2, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0]]
+        }
     endcount=0
     flag=True
-    players=[game['player1'],game['player2']]
+    players=[str(game['player1']),str(game['player2'])]
     printBoard(game['board'])
     while flag==True:
         
@@ -308,18 +332,19 @@ def play():
                 printBoard(game['board'])
             else:
                 endcount+=1
+                print("No valid moves for Computer, skipping")
                 if game['who']==1:
                     game['who']=2
                 elif game['who']==2:
                     game['who']=1
                 if endcount ==2:
-                    print("Game Over")
+                    print("\n\nGame Over\n\n")
                     if scoreBoard(game['board']) > 0:
-                        print(players[0] + " has won with a score of " + scoreBoard(game['board']))
+                        print(players[0] + " has won with a score of " + str(scoreBoard(game['board'])))
                     elif scoreBoard(game['board']) < 0:
-                        print(players[1] + " has won with a score of " + scoreBoard(game['board'])/-1)
+                        print(players[1] + " has won with a score of " + str(scoreBoard(game['board'])/-1))
                     else:
-                        print("The game has ended in a tie")
+                        print("\n\nThe game has ended in a tie\n\n")
                     break
                 
                 
@@ -340,14 +365,15 @@ def play():
                         printBoard(game['board'])
         
                 else:
+                    print("No valid moves for Player#1, skipping")
                     endcount+=1
                     game['who']=2
                     if endcount ==2:
-                        print("Game Over")
+                        print("Game Over, no more valid moves!")
                         if scoreBoard(game['board']) > 0:
-                            print(players[0] + " has won with a score of " + scoreBoard(game['board']))
+                            print(players[0] + " has won with a score of " + str(scoreBoard(game['board'])))
                         elif scoreBoard(game['board']) < 0:
-                            print(players[1] + " has won with a score of " + scoreBoard(game['board'])/-1)
+                            print(players[1] + " has won with a score of " + str(scoreBoard(game['board'])/-1))
                         else:
                             print("The game has ended in a tie")
                         break
@@ -370,16 +396,17 @@ def play():
                         printBoard(game['board'])                
         
                 else:
+                    print("No valid moves for Player #2")
                     endcount+=1
                     game['who']=1
                     if endcount ==2:
-                        print("\n\nGame Over")
+                        print("\n\nGame Over, no more valid moves!")
                         if scoreBoard(game['board']) > 0:
-                            print(players[0] + " has won with a score of " + scoreBoard(game['board']))
+                            print(players[0] + " has won with a score of " + str(scoreBoard(game['board'])))
                         elif scoreBoard(game['board']) < 0:
-                            print(players[1] + " has won with a score of " + scoreBoard(game['board'])/-1)
+                            print(players[1] + " has won with a score of " + str(scoreBoard(game['board'])/-1))
                         else:
-                            print("The game has ended in a tie")
+                            print("\n\nThe game has ended in a tie")
                         break
                         
                         
